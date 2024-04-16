@@ -105,4 +105,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 ScaffoldingReadMe.txt
 lib-cov/
 .lock-wscript
-
+.python-version
+.venv/
+venv/
+__pycache__/
