@@ -2,8 +2,7 @@ namespace DrMentation.Contracts.Document;
 
 
 public record DocumentResponse(
-    Int32 id,
-    Guid uuid,
+    Guid Uuid,
     string Parent,
     string Title,
     string Description,
