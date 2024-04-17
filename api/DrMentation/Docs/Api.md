@@ -39,6 +39,13 @@ POST /document
 }
 ```
 
+##### Curl example:
+
+```bash
+curl -H "Content-Type: application/json" -d '{ "parent": "root", "title" : "Majestic Mountains", "description": "A guide to the worlds most breathtaking mountains.", "content": "Content in text, preferably in markdown syntax to enhance readability and format."}' -X POST 127.0.0.1:5045/documents
+```
+
+
 #### Create Document Response
 
 ```js
@@ -71,6 +78,12 @@ Location: {{host}}/documents/{{id}}
 GET /documents/{{id}}
 ```
 
+##### Curl example:
+
+```bash
+curl 127.0.0.1:5045/documents/59a7213d-c863-42c2-9789-95f3b7f5271e
+```
+
 #### Get Document Response
 
 ```js
@@ -96,6 +109,12 @@ PUT /documents/{{id}}
 }
 ```
 
+##### Curl example:
+
+```bash
+curl -H "Content-Type: application/json" -d '{ "parent": "root", "title" : "Majestic Mountains", "description": "A guide to the worlds most breathtaking mountains.", "content": "Content in text, preferably in markdown syntax to enhance readability and format."}' -X PUT 127.0.0.1:5045/documents/59a7213d-c863-42c2-9789-95f3b7f5271e
+```
+
 #### Update Document Response
 
 ```js
@@ -116,6 +135,12 @@ or
 
 ```js
 DELETE /documents/{{id}}
+```
+
+##### Curl example:
+
+```bash
+curl -X DELETE 127.0.0.1:5045/documents/59a7213d-c863-42c2-9789-95f3b7f5271e
 ```
 
 #### Delete Document Response
