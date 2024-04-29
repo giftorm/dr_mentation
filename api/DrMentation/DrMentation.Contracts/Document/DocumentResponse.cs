@@ -9,6 +9,6 @@ public record DocumentResponse(
     string Content,
     DateTime Created,
     DateTime Updated,
-    DateTime Deleted
+    DateTime? Deleted = null
 );
 

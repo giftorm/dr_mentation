@@ -10,7 +10,7 @@ public class Document
     public string Content {get;}
     public DateTime Created {get;}
     public DateTime Updated {get;}
-    public DateTime Deleted {get;}
+    public DateTime? Deleted {get; set;}
 
     public Document(
         Guid uuid,
@@ -20,7 +20,7 @@ public class Document
         string content,
         DateTime created,
         DateTime updated,
-        DateTime deleted
+        DateTime? deleted = null
         )
     {
         // Enforce invariants

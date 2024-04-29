@@ -12,7 +12,8 @@ var app = builder.Build();
 {
     // HTTPS Redirect
     // app.UseHttpsRedirection();
-    app.UseStaticFiles();
+    app.UseExceptionHandler("/error");
+    // app.UseStaticFiles();
     app.MapControllers();
     app.Run();
 }
