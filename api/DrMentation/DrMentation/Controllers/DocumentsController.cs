@@ -19,22 +19,14 @@ public class DocumentsController : ApiController
     [HttpPost]
     public IActionResult CreateDocument(CreateDocumentRequest request)
     {
-        // Common pattern
-        // Map the data to the request
+        ErrorOr<Document> requestToDocumentResult = Document.From(request);
 
-        Document document = new Document(
-            Guid.NewGuid(),
-            request.Parent,
-            request.Title,
-            request.Description,
-            request.Content,
-            DateTime.UtcNow,
-            DateTime.UtcNow,
-            null
-            );
+        if (requestToDocumentResult.IsError)
+        {
+            return Problem(requestToDocumentResult.Errors);
+        }
 
-        // TODO: save doc to db
-        // The actual logics to perform on the request
+        Document document = requestToDocumentResult.Value;
         ErrorOr<Created> createDocumentResult = _documentsService.CreateDocument(document);
 
         return createDocumentResult.Match(
@@ -53,18 +45,16 @@ public class DocumentsController : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult PutDocument(Guid id, PutDocumentRequest request)
+    public IActionResult PutDocument(Guid uuid, PutDocumentRequest request)
     {
-        var document = new Document(
-            id,
-            request.Parent,
-            request.Title,
-            request.Description,
-            request.Content,
-            DateTime.UtcNow,
-            DateTime.UtcNow,
-            null
-        );
+        ErrorOr<Document> requestToDocumentResult = Document.From(uuid, request);
+
+        if (requestToDocumentResult.IsError)
+        {
+            return Problem(requestToDocumentResult.Errors);
+        }
+
+        Document document = requestToDocumentResult.Value;
 
         ErrorOr<PutDocument> putDocumentResult = _documentsService.PutDocument(document);
         return putDocumentResult.Match(
@@ -83,17 +73,6 @@ public class DocumentsController : ApiController
             errors => Problem(errors));
     }
 
-   // [HttpGet]
-   // public ActionResult<IEnumerable<DocumentResponse>> ListDocument()
-   // {
-   //     ErrorOr<List<Document>> listResult = _documentsService.ListDocuments();
-   //     List<DocumentResponse> documentResponses = new List<DocumentResponse>();
-
-   //     return listResult.Match(
-   //         document => Ok(
-   //             );
-   // }
-
     private CreatedAtActionResult CreatedAtGetDocument(Document document)
     {
         return CreatedAtAction(
@@ -105,7 +84,7 @@ public class DocumentsController : ApiController
 
     public DocumentResponse MapDocumentResponse(Document document)
     {
-            DocumentResponse doc = new DocumentResponse(
+            return new DocumentResponse(
             document.Uuid,
             document.Parent,
             document.Title,
@@ -115,6 +94,5 @@ public class DocumentsController : ApiController
             document.Updated,
             document.Deleted
         );
-        return doc;
     }
 }

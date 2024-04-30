@@ -49,13 +49,10 @@ public class DocumentsService : IDocumentsService
             {
                 return Errors.Document.Forbidden;
             }
+            // Keep the created date the same
+            document.Created = _documents[document.Uuid].Created;
         }
         _documents[document.Uuid] = document;
         return new PutDocument(isNewlyCreated);
     }
-
-    //public ErrorOr<List<Document>> ListDocuments()
-    //{
-    //    return _documents.Values.ToList();
-    //}
 }
