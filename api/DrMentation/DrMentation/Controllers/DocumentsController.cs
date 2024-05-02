@@ -44,7 +44,7 @@ public class DocumentsController : ApiController
                 errors => Problem(errors));
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{uuid:guid}")]
     public IActionResult PutDocument(Guid uuid, PutDocumentRequest request)
     {
         ErrorOr<Document> requestToDocumentResult = Document.From(uuid, request);
