@@ -15,4 +15,4 @@ export async function getDocument(uuid: string): Promise<any> {
         throw error; // Re-throw the error if you need to allow further error handling by the caller
     }
 }
-
+getDocument("56ad2968-eb90-4920-98b9-2defc8ad8bc9");

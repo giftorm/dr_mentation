@@ -8,7 +8,7 @@ describe("getDocument", () => {
         // Clear all instances and calls to constructor and all methods:
         jest.clearAllMocks();
     });
-
+    getDocument("56ad2968-eb90-4920-98b9-2defc8ad8bc9");
     it("should fetch and return document data", async () => {
         // Mock fetch to resolve with specific data
         (fetch as jest.Mock).mockResolvedValueOnce({
