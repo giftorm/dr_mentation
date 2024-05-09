@@ -1,17 +1,7 @@
-const apiURL = "http://127.0.0.1:5045";
+import { ClientError } from "./error";
 
 
-class ClientError extends Error {
-    status: number;
-    error?: Error;
-
-    constructor(message: string, status_code: number, error?: Error | undefined) {
-        super(message);
-        this.name = "ClientError";
-        this.status = status_code;
-        this.error = error;
-    }
-}
+const dev_api_url = "http://127.0.0.1:5045";
 
 
 class DocumentsClient {
@@ -112,6 +102,16 @@ class DocumentsClient {
         });
     }
 }
+
+function documentClientFactory(api_url: string): DocumentsClient {
+    return new DocumentsClient(api_url);
+}
+
+function devClientFactory(): DocumentsClient {
+    return new DocumentsClient(dev_api_url);
+}
+
+export { documentClientFactory, devClientFactory };
 
 // var client = new DocumentsClient(apiURL);
 // client.createDocument("title", "description", "content", "root");
