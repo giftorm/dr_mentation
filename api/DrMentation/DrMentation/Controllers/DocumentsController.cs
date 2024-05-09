@@ -19,7 +19,10 @@ public class DocumentsController : ApiController
     [HttpPost]
     public IActionResult CreateDocument(CreateDocumentRequest request)
     {
+        Console.WriteLine("REQUEST SERVICE");
+        Console.WriteLine($"REQUEST: {request}");
         ErrorOr<Document> requestToDocumentResult = Document.From(request);
+        Console.WriteLine($"REQUEST SERVICE RESPONSE: {requestToDocumentResult}");
 
         if (requestToDocumentResult.IsError)
         {
