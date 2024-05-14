@@ -1,39 +1,15 @@
 import { CORE_CONCEPTS } from './data.js';
-import reactImg from './assets/react-core-concepts.png';
-
-
-const reactDescriptions = ["Fundamental", "Core", "Crucial"];
-
-function getRandomInt(max) {
-    return Math.floor(Math.random() * (max));
-}
-
-function Header() {
-    const description = reactDescriptions[getRandomInt(reactDescriptions.length)];
-
-    return (
-      <header>
-        <img src={reactImg} alt="Stylized atom" />
-        <h1>React Essentials</h1>
-        <p>
-        {description} React concepts you will need for almost any app you are
-          going to build!
-        </p>
-      </header>
-    );
-}
-
-function CoreConcept({image, title, description}) {
-    return (
-        <li>
-            <img src={image} alt={title} />
-            <h3>{title}</h3>
-            <p>{description}</p>
-        </li>
-    );
-}
+import Header from './components/Header/Header.jsx';
+import CoreConcept from './components/CoreConcept.jsx';
+import TabButton from './components/TabButton.jsx';
 
 function App() {
+    function handleSelect(selectedButton) {
+        console.log(selectedButton);
+    }
+
+    const buttons = ["Component", "JSX", "Props", "State"];
+
   return (
     <div>
       <Header />
@@ -43,6 +19,16 @@ function App() {
       <ul>
         {CORE_CONCEPTS.map(CoreConcept)}
       </ul>
+      </section>
+      <section id="examples">
+        <h2>Examples</h2>
+        <menu>
+           {buttons.map((x) => <TabButton onClick={() => handleSelect(x.toLowerCase())}>{x}</TabButton>)}
+           <TabButton onClick={() => handleSelect('jsx')}>JSX</TabButton>
+           <TabButton onClick={() => handleSelect('props')}>Props</TabButton>
+           <TabButton onClick={() => handleSelect('state')}>Sate</TabButton>
+        </menu>
+          Dynamic Content   
       </section>
       </main>
     </div>
