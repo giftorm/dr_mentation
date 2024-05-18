@@ -1,17 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: [
-//     "./index.html",
-//     "./src/**/*.{js,ts,jsx,tsx}",
-//   ],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
-/** @type {import('tailwindcss').Config} */
 export default {
-     darkMode: 'class', // Enable dark mode
+  darkMode: 'class', // Enable dark mode
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -24,8 +17,10 @@ export default {
       fontFamily: {
         primary: ['Poppins', 'sans-serif'],
         secondary: ['Raleway', 'sans-serif'],
+          header: ['Quantico', 'sans-serif'],
       },
     },
   },
   plugins: [],
-}
+};
+
