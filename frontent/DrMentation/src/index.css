@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;700&display=swap'); /* Include the appropriate fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;700&display=swap'); /* Include the appropriate fonts */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
