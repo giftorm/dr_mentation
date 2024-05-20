@@ -47,7 +47,7 @@ function App() {
           feedElement={feedElement}
         />
         <div className='flex-grow flex justify-center'>
-          <div className='flex flex-grow max-w-[1794px] w-full'>
+          <div className={`flex ${editMode ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
             {editMode && <Editor source={source} onChange={setSource} />}
             {editMode && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
@@ -76,7 +76,7 @@ function Editor({ source, onChange }) {
 
 function MarkdownArea({ source, options }) {
   return (
-    <article className='flex-grow w-full p-5 overflow-autoi max-w-4xl'>
+    <article className='flex-grow w-full p-5 overflow-auto max-w-4xl'>
       <Markdown
         className='prose prose-invert break-words max-w-full'
         components={options}
