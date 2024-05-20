@@ -12,7 +12,6 @@ function App() {
   const [source, setSource] = useState('');
   const options = { code: CodeBlock, pre: Pre };
 
-
   const handleSave = () => {
     console.log("saved");
     setEditMode(false);
@@ -31,6 +30,10 @@ function App() {
     setEditMode(true);
   };
 
+  const feedElement = (syntax) => {
+    setSource((prevSource) => prevSource + syntax);
+  };
+
   return (
     <Fragment>
       <div className='bg-background min-h-screen flex flex-col'>
@@ -41,10 +44,10 @@ function App() {
           onExit={handleExit}
           onNew={handleNew}
           onEdit={handleEdit}
-          onChange={setSource}
+          feedElement={feedElement}
         />
         <div className='flex-grow flex justify-center'>
-          <div className='flex flex-grow max-w-[896px] w-full'>
+          <div className='flex flex-grow max-w-[1794px] w-full'>
             {editMode && <Editor source={source} onChange={setSource} />}
             {editMode && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
@@ -59,7 +62,7 @@ function App() {
 
 function Editor({ source, onChange }) {
   return (
-    <section className='flex-grow w-full pt-5'>
+    <section className='flex-grow w-full pt-5 max-w-4xl'>
       <textarea
         className='p-5 text-text w-full bg-transparent h-full resize-none focus:outline-none placeholder:text-lg placeholder:text-white placeholder:tracking-wider placeholder:opacity-80'
         placeholder='Markdown goes here...'
@@ -73,7 +76,7 @@ function Editor({ source, onChange }) {
 
 function MarkdownArea({ source, options }) {
   return (
-    <article className='flex-grow w-full p-5 overflow-auto'>
+    <article className='flex-grow w-full p-5 overflow-autoi max-w-4xl'>
       <Markdown
         className='prose prose-invert break-words max-w-full'
         components={options}
@@ -106,8 +109,8 @@ function Pre({ ...props }) {
   return <div className='not-prose'>{props.children}</div>;
 }
 
-function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onChange }) {
-  const buttonStyle = 'flex text-xl mx-4 text-text rounded-md font-primary';
+function SubHeader({ editMode, onSave, onExit, onNew, onEdit, feedElement }) {
+  const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
   if (editMode) {
     const btns = [
@@ -120,34 +123,34 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onChange }) {
     return (
       <header className='flex items-center h-14 sticky border-t-2 justify-center'>
         <div className='flex space-x-4'>
-        {btns.map((btn) => (
-          <button key={btn.syntax} className={buttonStyle} onClick={() => {onChange(btn.syntax)}}>
-            {btn.name}
+          {btns.map((btn) => (
+            <button key={btn.syntax} className={buttonStyle} onClick={() => feedElement(btn.syntax)}>
+              {btn.name}
+            </button>
+          ))}
+          <button key='save' className={buttonStyle} onClick={onSave}>
+            save
           </button>
-        ))}
-        <button key='save' className={buttonStyle} onClick={onSave}>
-          save
-        </button>
-        <button key='exit' className={buttonStyle} onClick={onExit}>
-          exit
-        </button>
+          <button key='exit' className={buttonStyle} onClick={onExit}>
+            exit
+          </button>
         </div>
       </header>
     );
   }
 
   return (
-      <header className='flex items-center h-14 sticky border-t-2 justify-center'>
-            <div className='flex space-x-4'>
-          <button key='new' className={buttonStyle} onClick={onNew}>
-            new
-          </button>
-          <button key='edit' className={buttonStyle} onClick={onEdit}>
-            edit
-          </button>
+    <header className='flex items-center h-14 sticky border-t-2 justify-center'>
+      <div className='flex space-x-4'>
+        <button key='new' className={buttonStyle} onClick={onNew}>
+          new
+        </button>
+        <button key='edit' className={buttonStyle} onClick={onEdit}>
+          edit
+        </button>
       </div>
-        </header>
-      );
+    </header>
+  );
 }
 
 export default App;
