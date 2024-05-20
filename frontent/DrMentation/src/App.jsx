@@ -4,7 +4,7 @@ import Page from './documents/Page';
 
 function App() {
     return (
-        <div>
+        <div className='bg-background'>
             <Header />
             <Page />
             <div className="bg-background min-h-screen">

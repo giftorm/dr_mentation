@@ -24,6 +24,7 @@ export default {
         primary: ['Poppins', 'sans-serif'],
         secondary: ['Raleway', 'sans-serif'],
           header: ['Quantico', 'sans-serif'],
+          markdown: ['Helvetica Neue', 'Helvetica'],
       },
       boxShadow: {
         '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
@@ -31,6 +32,8 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography')
+  ],
 };
 
