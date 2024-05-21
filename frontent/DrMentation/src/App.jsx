@@ -1,4 +1,4 @@
-import { useState, React, Fragment } from 'react';
+import { useState, React, Fragment, useRef } from 'react';
 import Header from './components/Header';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -11,6 +11,7 @@ function App() {
   const [editMode, setEditMode] = useState(false);
   const [source, setSource] = useState('');
   const options = { code: CodeBlock, pre: Pre };
+  const textareaRef = useRef();
 
   const handleSave = () => {
     console.log("saved");
@@ -45,10 +46,13 @@ function App() {
           onNew={handleNew}
           onEdit={handleEdit}
           feedElement={feedElement}
+          source={source}
+          setSource={setSource}
+          textareaRef={textareaRef}
         />
         <div className='flex-grow flex justify-center'>
           <div className={`flex ${editMode ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
-            {editMode && <Editor source={source} onChange={setSource} />}
+            {editMode && <Editor source={source} onChange={setSource} textareaRef={textareaRef}/>}
             {editMode && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
             )}
@@ -60,7 +64,7 @@ function App() {
   );
 }
 
-function Editor({ source, onChange }) {
+function Editor({ source, onChange, textareaRef }) {
   return (
     <section className='flex-grow w-full pt-5 max-w-4xl'>
       <textarea
@@ -69,6 +73,7 @@ function Editor({ source, onChange }) {
         onChange={(e) => onChange(e.target.value)}
         value={source}
         autoFocus
+        ref={textareaRef}
       />
     </section>
   );
@@ -109,22 +114,40 @@ function Pre({ ...props }) {
   return <div className='not-prose'>{props.children}</div>;
 }
 
-function SubHeader({ editMode, onSave, onExit, onNew, onEdit, feedElement }) {
+function SubHeader({ editMode, onSave, onExit, onNew, onEdit, feedElement, source, setSource, textareaRef}) {
   const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
+  
+  function applyFormat(fix, preOnly) {
+    const { selectionStart, selectionEnd } = textareaRef.current;
+    let newText;
+    if (preOnly) {
+      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + source.slice(selectionEnd);
+    } else {
+      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + fix + source.slice(selectionEnd);
+    }
+    setSource(newText);
+
+    setTimeout(() => {
+      textareaRef.current.focus();
+      textareaRef.current.selectionStart = selectionStart + fix.length;
+      textareaRef.current.selectionEnd = selectionEnd + fix.length;
+    }, 0);
+  };
+  
 
   if (editMode) {
     const btns = [
-      { name: 'B', syntax: '**Bold**' },
-      { name: 'I', syntax: '*Italic*' },
-      { name: 'S', syntax: '~Strikethrough~' },
-      { name: 'H1', syntax: '# ' },
+      { name: 'B', syntax: '**', preOnly: false},
+      { name: 'I', syntax: '*', preOnly: false },
+      { name: 'S', syntax: '~', preOnly: false },
+      { name: 'H1', syntax: '# ', preOnly: true },
     ];
 
     return (
       <header className='flex items-center h-14 sticky border-t-2 justify-center'>
         <div className='flex space-x-4'>
           {btns.map((btn) => (
-            <button key={btn.syntax} className={buttonStyle} onClick={() => feedElement(btn.syntax)}>
+            <button key={btn.syntax} className={buttonStyle} onClick={() => applyFormat(btn.syntax, btn.preOnly)}>
               {btn.name}
             </button>
           ))}
