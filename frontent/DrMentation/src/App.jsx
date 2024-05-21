@@ -34,6 +34,59 @@ function App() {
     setSource((prevSource) => prevSource + syntax);
   };
 
+    const handleGet = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:5045/documents/f3eaaa5d-bf02-4cb2-8d0f-2799c8862db9', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                credentials: 'include' // Include credentials if necessary (cookies, etc.)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(data);
+            setSource(data.content);
+        } catch (error) {
+            console.error('Error fetching markdown:', error);
+        }
+    };
+
+    const handlePost = async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:5045/documents', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                parent: '/',
+                title: 'Example Title',
+                description: 'A guide to the worlds most breathtaking mountains.',
+                content: "",
+            }),
+            credentials: 'include' // Include credentials if necessary (cookies, etc.)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('New document created:', data);
+
+        // Optionally, update your state or perform any other action
+    } catch (error) {
+        console.error('Error creating new document:', error);
+    }
+};
+
   return (
     <Fragment>
       <div className='bg-background min-h-screen flex flex-col'>
@@ -43,6 +96,8 @@ function App() {
           onSave={handleSave}
           onExit={handleExit}
           onNew={handleNew}
+          onGet={handleGet}
+          onPost={handlePost}
           onEdit={handleEdit}
           feedElement={feedElement}
         />
@@ -109,7 +164,7 @@ function Pre({ ...props }) {
   return <div className='not-prose'>{props.children}</div>;
 }
 
-function SubHeader({ editMode, onSave, onExit, onNew, onEdit, feedElement }) {
+function SubHeader({ editMode, onSave, onExit, onNew, onGet, onPost, onEdit, feedElement }) {
   const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
   if (editMode) {
@@ -147,6 +202,12 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, feedElement }) {
         </button>
         <button key='edit' className={buttonStyle} onClick={onEdit}>
           edit
+        </button>
+        <button key='get' className={buttonStyle} onClick={onGet}>
+            get
+        </button>
+        <button key='post' className={buttonStyle} onClick={onPost}>
+            post
         </button>
       </div>
     </header>
