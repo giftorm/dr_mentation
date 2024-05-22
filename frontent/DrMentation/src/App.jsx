@@ -2,6 +2,8 @@ import { useState, React, Fragment } from 'react';
 
 import { GetDocument, PostDocument } from './client/document';
 
+import { Document } from './model/Document';
+
 import Header from './components/Header';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import Editor from './components/Editor';
@@ -9,15 +11,9 @@ import SubHeader from './components/SubHeader';
 
 
 function App() {
-  function Document(parent=undefined, title=undefined, description=undefined, content = "") {
-      this.parent = parent;
-      this.title = title;
-      this.description = description;
-      this.content = content;
-  };
-
   const [editMode, setEditMode] = useState(false);
-  const [source, setSource] = useState(new Document());
+  const [source, setSource] = useState('');
+  const [currentDocument, setCurrentDocument] = useState(undefined);
 
   function handleSave() {
     console.log("saved");
@@ -29,7 +25,9 @@ function App() {
   };
 
   function handleNew() {
-    setSource(source.content);
+    let newDoc = Document;
+    console.log(newDoc);
+    setCurrentDocument(newDoc);
     setEditMode(true);
   };
 
@@ -38,8 +36,18 @@ function App() {
   };
 
   function feedElement(syntax) {
-    setSource((prevSource) => prevSource.content +  syntax);
+      setCurrentDocument((prevDocument) => ({
+        ...prevDocument,
+        content: prevDocument.content + syntax,
+      }));
   };
+
+ function updateDocument(content) {
+    setCurrentDocument((prevDocument) => ({
+      ...prevDocument,
+      content: content,
+    }));
+  }
 
   return (
     <Fragment>
@@ -57,11 +65,11 @@ function App() {
         />
         <div className='flex-grow flex justify-center'>
           <div className={`flex ${editMode ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
-            {editMode && <Editor source={source.content} onChange={setSource} />}
+            {editMode && <Editor content={currentDocument.content} onChange={updateDocument} />}
             {editMode && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
             )}
-            <MarkdownRenderer source={source.content} />
+            <MarkdownRenderer document={currentDocument} />
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ function Pre({ ...props }) {
   return <div className='not-prose'>{props.children}</div>;
 }
 
-function MarkdownRenderer({ source }) {
+function MarkdownRenderer({document}) {
   const options = { code: CodeBlock, pre: Pre };
 
   return (
@@ -23,7 +23,7 @@ function MarkdownRenderer({ source }) {
           [rehypeExternalLinks, { content: { type: 'text', value: '🔗' } }],
         ]}
       >
-        {source}
+        {document.content}
       </Markdown>
     </article>
   );
