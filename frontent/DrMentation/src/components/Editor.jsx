@@ -1,4 +1,4 @@
-export default function Editor({ content, onChange }) {
+export default function Editor({ content, onChange, textareaRef }) {
   return (
     <section className='flex-grow w-full pt-5 max-w-4xl'>
       <textarea
@@ -7,6 +7,7 @@ export default function Editor({ content, onChange }) {
         onChange={(e) => onChange(e.target.value)}
         value={content}
         autoFocus
+        ref={textareaRef}
       />
     </section>
   );
