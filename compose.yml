@@ -2,11 +2,6 @@ services:
   backend-api:
     ports:
       - "5045:80"
-    networks:
-      - back-tier
     build:
       context: ./api/DrMentation
       dockerfile: docker/Dockerfile
-networks:
-  # The presence of these objects is sufficient to define them
-  back-tier: {}

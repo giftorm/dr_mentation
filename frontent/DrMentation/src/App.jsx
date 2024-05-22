@@ -1,39 +1,54 @@
 import { useState, React, Fragment, useRef } from 'react';
+
+import { GetDocument, PostDocument } from './client/document';
+
+import { Document } from './model/Document';
+
 import Header from './components/Header';
-import Markdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { materialOceanic } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import remarkGfm from 'remark-gfm';
-import rehypeSanitize from 'rehype-sanitize';
-import rehypeExternalLinks from 'rehype-external-links';
+import MarkdownRenderer from './components/MarkdownRenderer';
+import Editor from './components/Editor';
+import SubHeader from './components/SubHeader';
+
 
 function App() {
   const [editMode, setEditMode] = useState(false);
   const [source, setSource] = useState('');
-  const options = { code: CodeBlock, pre: Pre };
+  const [currentDocument, setCurrentDocument] = useState(undefined);
   const textareaRef = useRef();
 
-  const handleSave = () => {
+  function handleSave() {
     console.log("saved");
     setEditMode(false);
   };
 
-  const handleExit = () => {
+  function handleExit() {
     setEditMode(false);
   };
 
-  const handleNew = () => {
-    setSource('');
+  function handleNew() {
+    let newDoc = Document;
+    console.log(newDoc);
+    setCurrentDocument(newDoc);
     setEditMode(true);
   };
 
-  const handleEdit = () => {
+  function handleEdit() {
     setEditMode(true);
   };
 
-  const feedElement = (syntax) => {
-    setSource((prevSource) => prevSource + syntax);
+  function feedElement(syntax) {
+      setCurrentDocument((prevDocument) => ({
+        ...prevDocument,
+        content: prevDocument.content + syntax,
+      }));
   };
+
+ function updateDocument(content) {
+    setCurrentDocument((prevDocument) => ({
+      ...prevDocument,
+      content: content,
+    }));
+  }
 
   return (
     <Fragment>
@@ -44,6 +59,8 @@ function App() {
           onSave={handleSave}
           onExit={handleExit}
           onNew={handleNew}
+          onGet={GetDocument}
+          onPost={PostDocument}
           onEdit={handleEdit}
           feedElement={feedElement}
           source={source}
@@ -52,11 +69,11 @@ function App() {
         />
         <div className='flex-grow flex justify-center'>
           <div className={`flex ${editMode ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
-            {editMode && <Editor source={source} onChange={setSource} textareaRef={textareaRef}/>}
+            {editMode && <Editor content={currentDocument.content} onChange={updateDocument} textareaRef={textareaRef}/>}
             {editMode && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
             )}
-            <MarkdownArea source={source} options={options} />
+            <MarkdownRenderer document={currentDocument} />
           </div>
         </div>
       </div>
