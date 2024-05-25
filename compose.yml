@@ -1,3 +1,5 @@
+version: '3.4'
+
 services:
   backend-api:
     ports:
@@ -5,3 +7,8 @@ services:
     build:
       context: ./api/DrMentation
       dockerfile: docker/Dockerfile
+    volumes:
+      - ./api/DrMentation:/app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
