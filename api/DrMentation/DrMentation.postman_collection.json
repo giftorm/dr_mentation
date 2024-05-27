@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "322e96dc-eeda-42d7-81db-1947c59fd3c8",
+		"name": "DrMenatation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3930333"
+	},
+	"item": [
+		{
+			"name": "documents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5045/documents/56ad2968-eb90-4920-98b9-2defc8ad8bc9",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5045",
+					"path": [
+						"documents",
+						"56ad2968-eb90-4920-98b9-2defc8ad8bc9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "documents",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"parent\": \"kalle\",\n    \"title\": \"Turborocs\",\n    \"description\": \"A guide to the worlds most breathtaking mountains.\",\n    \"content\": \"Content and format.\"\n    }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5045/documents/56ad2968-eb90-4920-98b9-2defc8ad8bc9",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5045",
+					"path": [
+						"documents",
+						"56ad2968-eb90-4920-98b9-2defc8ad8bc9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "documents",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5045/documents/56ad2968-eb90-4920-98b9-2defc8ad8bc9",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5045",
+					"path": [
+						"documents",
+						"56ad2968-eb90-4920-98b9-2defc8ad8bc9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "documents",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"parent\": \"root\",\n    \"title\": \"Kalles Ankan\",\n    \"description\": \"A guide to the worlds most breathtaking mountains.\",\n    \"content\": \"Content in text, preferably in markdown syntax to enhance readability and format.\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5045/documents/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5045",
+					"path": [
+						"documents",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
