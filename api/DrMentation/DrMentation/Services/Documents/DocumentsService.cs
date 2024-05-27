@@ -59,6 +59,11 @@ public class DocumentsService : IDocumentsService
 
     public ErrorOr<IEnumerable<Document>> SearchDocuments(SearchDocumentsRequest request)
     {
+        if (string.IsNullOrEmpty(request.Title) && string.IsNullOrEmpty(request.Content))
+        {
+            return new List<Document>();
+        }
+
         var result = _documents.Values.Where(document =>
             (string.IsNullOrEmpty(request.Title) || document.Title.Contains(request.Title, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrEmpty(request.Content) || document.Content.Contains(request.Content, StringComparison.OrdinalIgnoreCase)) &&
