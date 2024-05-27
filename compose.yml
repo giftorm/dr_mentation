@@ -9,6 +9,20 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - ./api/DrMentation:/app
+      - /app/bin
+      - /app/obj
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+
+  frontend-app:
+    ports:
+      - "5173:5173"
+    build:
+      context: ./frontend/DrMentation
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/DrMentation:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
 
