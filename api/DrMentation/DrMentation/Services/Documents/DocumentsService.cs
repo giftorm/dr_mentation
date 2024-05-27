@@ -73,4 +73,8 @@ public class DocumentsService : IDocumentsService
         return result.Any() ? result : Errors.Document.NotFound;
     }
 
+    public ErrorOr<IEnumerable<Document>> GetAllDocuments()
+    {
+        return _documents.Values.Where(d => !d.Deleted.HasValue).ToList();
+    }
 }

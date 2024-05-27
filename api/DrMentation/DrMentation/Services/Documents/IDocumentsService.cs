@@ -12,5 +12,5 @@ public interface IDocumentsService
     ErrorOr<PutDocument> PutDocument(Document document);
     ErrorOr<Deleted> DeleteDocument(Guid id);
     ErrorOr<IEnumerable<Document>> SearchDocuments(SearchDocumentsRequest request);
-//    ErrorOr<List<Document>> ListDocuments();
+    ErrorOr<IEnumerable<Document>> GetAllDocuments();
 }
