@@ -73,6 +73,17 @@ public class DocumentsController : ApiController
             errors => Problem(errors));
     }
 
+    [HttpPost("search")]
+    public IActionResult SearchDocuments([FromBody] SearchDocumentsRequest request)
+    {
+        ErrorOr<IEnumerable<Document>> searchDocumentsResult = _documentsService.SearchDocuments(request);
+
+        return searchDocumentsResult.Match(
+            documents => Ok(documents.Select(MapDocumentResponse)),
+            errors => Problem(errors)
+        );
+    }
+
     private CreatedAtActionResult CreatedAtGetDocument(Document document)
     {
         return CreatedAtAction(

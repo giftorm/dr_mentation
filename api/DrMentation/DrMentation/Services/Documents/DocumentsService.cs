@@ -1,5 +1,6 @@
 using DrMentation.Models;
 using DrMentation.ServiceErrors;
+using DrMentation.Contracts.Document;
 using ErrorOr;
 
 
@@ -55,4 +56,21 @@ public class DocumentsService : IDocumentsService
         _documents[document.Uuid] = document;
         return new PutDocument(isNewlyCreated);
     }
+
+    public ErrorOr<IEnumerable<Document>> SearchDocuments(SearchDocumentsRequest request)
+    {
+        if (string.IsNullOrEmpty(request.Title) && string.IsNullOrEmpty(request.Content))
+        {
+            return new List<Document>();
+        }
+
+        var result = _documents.Values.Where(document =>
+            (string.IsNullOrEmpty(request.Title) || document.Title.Contains(request.Title, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(request.Content) || document.Content.Contains(request.Content, StringComparison.OrdinalIgnoreCase)) &&
+            !document.Deleted.HasValue
+        ).ToList();
+
+        return result.Any() ? result : Errors.Document.NotFound;
+    }
+
 }
