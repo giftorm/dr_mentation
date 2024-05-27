@@ -44,6 +44,17 @@ public class DocumentsController : ApiController
                 errors => Problem(errors));
     }
 
+    [HttpGet]
+    public IActionResult GetAllDocuments()
+    {
+        ErrorOr<IEnumerable<Document>> getAllDocumentsResult = _documentsService.GetAllDocuments() ;
+
+        return getAllDocumentsResult.Match(
+            documents => Ok(documents.Select(MapDocumentResponse)),
+            errors => Problem(errors)
+        );
+    }
+
     [HttpPut("{uuid:guid}")]
     public IActionResult PutDocument(Guid uuid, PutDocumentRequest request)
     {
