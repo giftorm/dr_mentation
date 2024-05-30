@@ -14,19 +14,21 @@ function MarkdownRenderer({document}) {
 
   return (
     <article className='flex-grow w-full p-5 overflow-auto max-w-4xl'>
-      <Markdown
-        className='prose prose-invert break-words max-w-full'
-        components={options}
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[
-          rehypeSanitize,
-          [rehypeExternalLinks, { content: { type: 'text', value: '🔗' } }],
-        ]}
-      >
-        {document.content}
-      </Markdown>
-    </article>
-  );
-}
+      {(document) ?
+          <Markdown
+            className='prose prose-invert break-words max-w-full'
+            components={options}
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[
+              rehypeSanitize,
+              [rehypeExternalLinks, { content: { type: 'text', value: '🔗' } }],
+            ]}
+          >
+            {document.content}
+          </Markdown>
+              : <p>kalle</p>}
+        </article>
+      );
+    }
 
 export default MarkdownRenderer;

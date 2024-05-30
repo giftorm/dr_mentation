@@ -12,8 +12,14 @@ import SubHeader from './components/SubHeader';
 
 function App() {
   const [editMode, setEditMode] = useState(false);
-  const [currentDocument, setCurrentDocument] = useState(Document);
+  const [currentDocument, setCurrentDocument] = useState(undefined);
+  const [lastSavedDocument, setLastSavedDocument] = useState(undefined);
+  const [hidePreview, setHidePreview] = useState(false);
   const textareaRef = useRef();
+
+  function newDocument() {
+    return new Document();
+  };
 
   function handleSave() {
     console.log("saved");
@@ -21,17 +27,22 @@ function App() {
   };
 
   function handleExit() {
+    setCurrentDocument(lastSavedDocument);
     setEditMode(false);
   };
 
   function handleNew() {
-    let newDoc = Document;
-    console.log(newDoc);
-    setCurrentDocument(newDoc);
+    setCurrentDocument(newDocument());
+    setLastSavedDocument(currentDocument);
     setEditMode(true);
   };
 
   function handleEdit() {
+    if (!currentDocument) {
+      setCurrentDocument(newDocument());
+      setLastSavedDocument(currentDocument);
+    }
+    setLastSavedDocument(currentDocument);
     setEditMode(true);
   };
 
@@ -54,7 +65,7 @@ function App() {
           onGet={GetDocument}
           onPost={PostDocument}
           onEdit={handleEdit}
-          source={currentDocument.content}
+          source={currentDocument}
           setSource={updateDocument}
           textareaRef={textareaRef}
         />

@@ -5,9 +5,9 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, source, setSource,
     const { selectionStart, selectionEnd } = textareaRef.current;
     let newText;
     if (preOnly) {
-      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + source.slice(selectionEnd);
+      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + source.content.slice(selectionEnd);
     } else {
-      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + fix + source.slice(selectionEnd);
+      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + fix + source.content.slice(selectionEnd);
     }
     setSource(newText);
 
