@@ -30,6 +30,29 @@
 			"response": []
 		},
 		{
+			"name": "all documents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5045/documents/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5045",
+					"path": [
+						"documents",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "documents",
 			"request": {
 				"method": "PUT",
@@ -123,7 +146,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"\"\n}",
+					"raw": "{\n    \"title\": \"make\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
