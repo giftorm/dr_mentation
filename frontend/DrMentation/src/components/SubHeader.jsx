@@ -1,4 +1,4 @@
-function SubHeader({ editMode, onSave, onExit, onNew, onEdit, source, setSource, textareaRef }) {
+function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onHide, source, preview, setSource, textareaRef }) {
   const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
   function applyFormat(fix, preOnly) {
@@ -41,6 +41,9 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, source, setSource,
           <button key='exit' className={buttonStyle} onClick={onExit}>
             exit
           </button>
+          <button key='preview' className={buttonStyle} onClick={() => onHide(!preview)}>
+           {preview ? 'hide' : 'preview'}
+        </button>
         </div>
       </header>
     );

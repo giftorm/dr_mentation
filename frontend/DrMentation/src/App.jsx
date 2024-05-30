@@ -65,17 +65,19 @@ function App() {
           onGet={GetDocument}
           onPost={PostDocument}
           onEdit={handleEdit}
+          onHide={setHidePreview}
           source={currentDocument}
+          preview={hidePreview}
           setSource={updateDocument}
           textareaRef={textareaRef}
         />
         <div className='flex-grow flex justify-center'>
-          <div className={`flex ${editMode ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
+          <div className={`flex ${editMode &&hidePreview ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
             {editMode && <Editor content={currentDocument.content} onChange={updateDocument} textareaRef={textareaRef}/>}
-            {editMode && (
+            {editMode && hidePreview && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
             )}
-            <MarkdownRenderer document={currentDocument} />
+      {!editMode || hidePreview ? <MarkdownRenderer document={currentDocument} />: null}
           </div>
         </div>
       </div>
