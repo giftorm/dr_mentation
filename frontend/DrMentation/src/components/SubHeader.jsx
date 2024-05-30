@@ -1,4 +1,4 @@
-function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onHide, source, preview, setSource, textareaRef }) {
+function SubHeader({ editMode, onSave, onCancel, onNew, onEdit, onHide, source, preview, setSource, textareaRef }) {
   const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
   function applyFormat(fix, preOnly) {
@@ -38,8 +38,8 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onHide, source, pr
           <button key='save' className={buttonStyle} onClick={onSave}>
             save
           </button>
-          <button key='exit' className={buttonStyle} onClick={onExit}>
-            exit
+          <button key='cancel' className={buttonStyle} onClick={onCancel}>
+            cancel
           </button>
           <button key='preview' className={buttonStyle} onClick={() => onHide(!preview)}>
            {preview ? 'hide' : 'preview'}

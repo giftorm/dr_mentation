@@ -26,7 +26,7 @@ function App() {
     setEditMode(false);
   };
 
-  function handleExit() {
+  function handleCancel() {
     setCurrentDocument(lastSavedDocument);
     setEditMode(false);
   };
@@ -60,7 +60,7 @@ function App() {
         <SubHeader
           editMode={editMode}
           onSave={handleSave}
-          onExit={handleExit}
+          onCancel={handleCancel}
           onNew={handleNew}
           onGet={GetDocument}
           onPost={PostDocument}
