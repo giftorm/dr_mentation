@@ -8,10 +8,12 @@ import Header from './components/Header';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import Editor from './components/Editor';
 import SubHeader from './components/SubHeader';
+import Explorer from './components/Explorer';
 
 
 function App() {
   const [editMode, setEditMode] = useState(false);
+  const [documentsExplorer, setDocumentsExplorer] = useState(false);
   const [currentDocument, setCurrentDocument] = useState(undefined);
   const [lastSavedDocument, setLastSavedDocument] = useState(undefined);
   const [hidePreview, setHidePreview] = useState(false);
@@ -53,6 +55,10 @@ function App() {
     }));
   }
 
+  function toggleExplorer() {
+    setDocumentsExplorer(!documentsExplorer)
+  }
+
   return (
     <Fragment>
       <div className='bg-background min-h-screen flex flex-col'>
@@ -67,10 +73,12 @@ function App() {
           onEdit={handleEdit}
           onHide={setHidePreview}
           source={currentDocument}
-          preview={hidePreview}
+          onToggleExplorer={toggleExplorer}
+          explorer={setDocumentsExplorer}
           setSource={updateDocument}
           textareaRef={textareaRef}
         />
+        {documentsExplorer ? <Explorer onClose={toggleExplorer}/> : null}
         <div className='flex-grow flex justify-center'>
           <div className={`flex ${editMode &&hidePreview ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
             {editMode && <Editor content={currentDocument.content} onChange={updateDocument} textareaRef={textareaRef}/>}
