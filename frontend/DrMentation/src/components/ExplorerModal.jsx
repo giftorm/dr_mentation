@@ -1,18 +1,33 @@
 import { useState, useEffect } from 'react';
-import { GetDocument } from '../client/document'; // Assuming you have an API function to get documents
+import { ListDocuments } from '../client/document'; // Assuming you have an API function to get documents
 import MarkdownRenderer from './MarkdownRenderer';
+import { Document } from '../model/Document';
 
 const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
 export default function ExplorerModal({ onToggle, setCurrentDocument }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [documents, setDocuments] = useState([]);
+  const [currentDocuments, setCurrentDocuments] = useState([]);
   const [activeDocument, setActiveDocument] = useState(null);
   const [hoveredDocument, setHoveredDocument] = useState(null);
 
+  const [isFetching, setIsFetching] = useState(false);
+  const [error, setError] = useState();
+
   useEffect(() => {
-    // Fetch documents based on search query
-    GetDocument().then(setDocuments);
+    async function listDocuments() {
+      setIsFetching(true);
+      try {
+        const docs = await ListDocuments();
+        let asd = docs.map(({uuid, title, content}) => new Document(content, uuid, undefined, title))
+        setCurrentDocuments(asd);
+      } catch (error) {
+        console.log(error);
+        setError({message: error.message || 'Failed to fetch Documents.'});
+      }
+      setIsFetching(false);
+    };
+    listDocuments();
   }, [searchQuery]);
 
   return (
@@ -21,7 +36,7 @@ export default function ExplorerModal({ onToggle, setCurrentDocument }) {
       onClick={onToggle}
     >
       <div
-        className="bg-primary w-full max-w-3xl h-[70vh] p-6 rounded-lg shadow-lg"
+        className="bg-primary w-full max-w-5xl h-[70vh] p-6 rounded-lg shadow-lg ml-5 mr-5"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-end">
@@ -33,13 +48,14 @@ export default function ExplorerModal({ onToggle, setCurrentDocument }) {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery()}
             placeholder="Search files..."
             className="w-full p-2 mb-4 border rounded"
           />
           <div className="flex">
             <div className="w-1/3 border-r pr-4">
-              {documents.map((doc, index) => (
+              {error && <>Error: {error.message}</>}
+              {!error && isFetching ? <>Loading...</> : currentDocuments.map((doc, index) => (
                 <Item
                   key={index}
                   document={doc}
@@ -76,7 +92,7 @@ function Item({ document, isActive, isHovered, onHover, onClick }) {
       onClick={onClick}
       className={`p-2 mb-2 border rounded cursor-pointer ${isHovered ? 'bg-gray-200' : 'bg-white'} ${isActive ? 'bg-gray-300' : ''}`}
     >
-      {document.name}
+      {document.title}
     </div>
   );
 }

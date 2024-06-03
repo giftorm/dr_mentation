@@ -1,56 +1,54 @@
+import { Document } from "../model/Document";
+
 let headers = {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             };
 
 
-async function GetDocument({id}) {
-    try {
-        const response = await fetch(`http://127.0.0.1:5045/documents/${id}`, {
-            method: 'GET',
-            headers: headers,
-        });
+export async function GetDocument({id}) {
+    const response = await fetch(`http://127.0.0.1:5045/documents/${id}`, {
+        method: 'GET',
+        headers: headers,
+    });
+    const resData = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching markdown:', error);
+    if (!response.ok) {
+        throw new Error('Failed to get Document');
     }
+
+    return resData;
 };
 
-async function PostDocument ({parent, title, description, content}) {
-    try {
-        const response = await fetch('http://127.0.0.1:5045/documents', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                parent: parent,
-                title: title,
-                description: description,
-                content: content,
-            }),
-        });
+export async function ListDocuments() {
+    const res = await fetch('http://127.0.0.1:5045/documents/', {
+        method: 'GET',
+        headers: headers,
+    });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error creating new document:', error);
+    if (!res.ok) {
+        throw new Error('Failed to get Documents');
     }
+    const resData = await res.json();
+    return resData;
 };
 
-export { GetDocument, PostDocument };
+export async function PostDocument ({parent, title, description, content}) {
+    const response = await fetch('http://127.0.0.1:5045/documents', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+            parent: parent,
+            title: title,
+            description: description,
+            content: content,
+        }),
+    });
+    const resData = await response.json();
 
-export async function GetDocuments(query) {
-    // Replace with your actual API call
-    return [
-      { id: 1, name: 'Document 1', content: '# Document 1 content' },
-      { id: 2, name: 'Document 2', content: '# Document 2 content' },
-      // ... more documents
-    ];
-  }
+    if (!response.ok) {
+        throw new Error('Failed to create Document');
+    }
+
+    return resData;
+};
