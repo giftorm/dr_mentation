@@ -45,3 +45,12 @@ async function PostDocument ({parent, title, description, content}) {
 };
 
 export { GetDocument, PostDocument };
+
+export async function GetDocuments(query) {
+    // Replace with your actual API call
+    return [
+      { id: 1, name: 'Document 1', content: '# Document 1 content' },
+      { id: 2, name: 'Document 2', content: '# Document 2 content' },
+      // ... more documents
+    ];
+  }
