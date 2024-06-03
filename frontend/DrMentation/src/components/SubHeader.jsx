@@ -54,7 +54,7 @@ function SubHeader({ editMode, onSave, onCancel, onNew, onEdit, onHide, source, 
     <header className='flex items-center h-14 sticky border-t-2 justify-center'>
       <div className='flex space-x-4'>
         <button key='explorer' className={buttonStyle} onClick={onToggleExplorer}>
-          Explorer
+          explorer
         </button>
         <button key='new' className={buttonStyle} onClick={onNew}>
           new

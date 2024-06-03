@@ -4,31 +4,32 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeExternalLinks from 'rehype-external-links';
 import CodeBlock from './CodeBlock';
 
-
 function Pre({ ...props }) {
   return <div className='not-prose'>{props.children}</div>;
 }
 
-function MarkdownRenderer({document}) {
+function MarkdownRenderer({ document }) {
   const options = { code: CodeBlock, pre: Pre };
 
   return (
-    <article className='flex-grow w-full p-5 overflow-auto max-w-4xl'>
-      {(document) ?
-          <Markdown
-            className='prose prose-invert break-words max-w-full'
-            components={options}
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[
-              rehypeSanitize,
-              [rehypeExternalLinks, { content: { type: 'text', value: '🔗' } }],
-            ]}
-          >
-            {document.content}
-          </Markdown>
-              : <p>kalle</p>}
-        </article>
-      );
-    }
+    <div className='max-h-full overflow-auto p-4'>
+      {document ? (
+        <Markdown
+          className='prose prose-invert break-words max-w-full'
+          components={options}
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[
+            rehypeSanitize,
+            [rehypeExternalLinks, { content: { type: 'text', value: '🔗' } }],
+          ]}
+        >
+          {document.content}
+        </Markdown>
+      ) : (
+        <p>kalle</p>
+      )}
+    </div>
+  );
+}
 
 export default MarkdownRenderer;

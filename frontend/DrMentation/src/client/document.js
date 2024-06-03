@@ -44,11 +44,28 @@ export async function PostDocument ({parent, title, description, content}) {
             content: content,
         }),
     });
-    const resData = await response.json();
-
     if (!response.ok) {
         throw new Error('Failed to create Document');
     }
 
-    return resData;
+    return await response.json();
+};
+
+export async function PutDocument ({title, id, content}) {
+    console.log(title);
+    console.log(id);
+    console.log(content);
+    const response = await fetch(`http://127.0.0.1:5045/documents/${id}`, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({
+            parent: "root",
+            title: title,
+            description: "template description",
+            content: content,
+        }),
+    });
+    if (!response.ok) {
+        throw new Error('Failed to create Document');
+    }
 };

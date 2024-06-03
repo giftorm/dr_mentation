@@ -1,18 +1,17 @@
 import { useState, React, Fragment, useRef } from 'react';
-
-import { GetDocument, PostDocument } from './client/document';
+import { GetDocument, PostDocument, PutDocument } from './client/document';
 import { Document } from './model/Document';
 import Header from './components/Header';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import Editor from './components/Editor';
 import SubHeader from './components/SubHeader';
 import ExplorerModal from './components/ExplorerModal';
-import DocumentForm from './components/DocumentForm'; // Import the new form component
+import DocumentForm from './components/DocumentForm';
 
 function App() {
   const [editMode, setEditMode] = useState(false);
   const [documentsExplorer, setDocumentsExplorer] = useState(false);
-  const [currentDocument, setCurrentDocument] = useState(undefined);
+  const [activeDocument, setActiveDocument] = useState(undefined);
   const [lastSavedDocument, setLastSavedDocument] = useState(undefined);
   const [hidePreview, setHidePreview] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -20,46 +19,57 @@ function App() {
 
   function newDocument() {
     return new Document();
-  };
+  }
 
   function handleSave() {
-    if (!currentDocument.title || !currentDocument.id) {
+    if (!activeDocument.title || !activeDocument.id) {
       setShowForm(true);
     } else {
-      saveDocument(currentDocument);
+      saveDocument(activeDocument);
     }
-  };
+  }
 
-  function saveDocument(document) {
-    PostDocument(document);
+  async function saveDocument(document) {
+    let res;
+    if (document.id) {
+      console.log(`Updating document with id: ${document.id}`);
+      res = await PutDocument(document);
+    } else {
+      console.log('Creating NEW document.');
+      res = await PostDocument(document);
+      console.log("Returned data from Post:");
+      console.log(res);
+      setActiveDocument(new Document(res.content, res.uuid, res.parent, res.title, res.description)); // Update activeDocument with latest data
+    }
+
     setEditMode(false);
     setShowForm(false);
     setLastSavedDocument(document);
   }
 
   function handleCancel() {
-    setCurrentDocument(lastSavedDocument);
+    activateDocument(lastSavedDocument);
     setEditMode(false);
     setShowForm(false);
-  };
+  }
 
   function handleNew() {
     const doc = newDocument();
-    setCurrentDocument(doc);
+    activateDocument(doc);
     setEditMode(true);
-  };
+  }
 
   function handleEdit() {
-    if (!currentDocument) {
+    if (!activeDocument) {
       const doc = newDocument();
-      setCurrentDocument(doc);
+      activateDocument(doc);
     }
-    setLastSavedDocument(currentDocument);
+    setLastSavedDocument(activeDocument);
     setEditMode(true);
-  };
+  }
 
   function updateDocument(content) {
-    setCurrentDocument((prevDocument) => ({
+    setActiveDocument((prevDocument) => ({
       ...prevDocument,
       content: content,
     }));
@@ -70,7 +80,12 @@ function App() {
   }
 
   function handleFormSave(updatedDocument) {
+    setActiveDocument(updatedDocument);
     saveDocument(updatedDocument);
+  }
+
+  function activateDocument(document) {
+    setActiveDocument(document);
   }
 
   return (
@@ -86,26 +101,26 @@ function App() {
           onPost={PostDocument}
           onEdit={handleEdit}
           onHide={setHidePreview}
-          source={currentDocument}
+          source={activeDocument}
           onToggleExplorer={toggleExplorer}
           explorer={setDocumentsExplorer}
           setSource={updateDocument}
           textareaRef={textareaRef}
         />
-        {documentsExplorer ? <ExplorerModal onToggle={toggleExplorer} setCurrentDocument={setCurrentDocument} /> : null}
+        {documentsExplorer ? <ExplorerModal onToggle={toggleExplorer} activeDocument={activeDocument} setActiveDocument={activateDocument} /> : null}
         <div className='flex-grow flex justify-center'>
           <div className={`flex ${editMode && hidePreview ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
-            {editMode && <Editor content={currentDocument?.content || ''} onChange={updateDocument} textareaRef={textareaRef} />}
+            {editMode && <Editor content={activeDocument?.content || ''} onChange={updateDocument} textareaRef={textareaRef} />}
             {editMode && hidePreview && (
               <div className='w-[2px] border-l-2 border-text border-dashed'></div>
             )}
-            {!editMode || hidePreview ? <MarkdownRenderer document={currentDocument} /> : null}
+            {!editMode || hidePreview ? <MarkdownRenderer document={activeDocument} /> : null}
           </div>
         </div>
       </div>
       {showForm && (
         <DocumentForm
-          document={currentDocument}
+          document={activeDocument}
           onSave={handleFormSave}
           onCancel={handleCancel}
         />

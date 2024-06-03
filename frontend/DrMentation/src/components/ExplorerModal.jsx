@@ -5,12 +5,10 @@ import { Document } from '../model/Document';
 
 const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
-export default function ExplorerModal({ onToggle, setCurrentDocument }) {
+export default function ExplorerModal({ onToggle, activeDocument, setActiveDocument }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentDocuments, setCurrentDocuments] = useState([]);
-  const [activeDocument, setActiveDocument] = useState(null);
   const [hoveredDocument, setHoveredDocument] = useState(null);
-
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState();
 
@@ -19,16 +17,16 @@ export default function ExplorerModal({ onToggle, setCurrentDocument }) {
       setIsFetching(true);
       try {
         const docs = await ListDocuments();
-        let asd = docs.map(({uuid, title, content}) => new Document(content, uuid, undefined, title))
+        let asd = docs.map(({ uuid, title, content }) => new Document(content, uuid, undefined, title));
         setCurrentDocuments(asd);
       } catch (error) {
         console.log(error);
-        setError({message: error.message || 'Failed to fetch Documents.'});
+        setError({ message: error.message || 'Failed to fetch Documents.' });
       }
       setIsFetching(false);
-    };
+    }
     listDocuments();
-  }, [searchQuery]);
+  }, []);
 
   return (
     <div
@@ -44,16 +42,16 @@ export default function ExplorerModal({ onToggle, setCurrentDocument }) {
             close
           </button>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col h-full">
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery()}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search files..."
             className="w-full p-2 mb-4 border rounded"
           />
-          <div className="flex">
-            <div className="w-1/3 border-r pr-4">
+          <div className="flex-grow flex max-h-[80%]">
+            <div className="w-1/3 border-r pr-4 overflow-y-auto">
               {error && <>Error: {error.message}</>}
               {!error && isFetching ? <>Loading...</> : currentDocuments.map((doc, index) => (
                 <Item
@@ -63,17 +61,15 @@ export default function ExplorerModal({ onToggle, setCurrentDocument }) {
                   isHovered={hoveredDocument && hoveredDocument.id === doc.id}
                   onHover={() => setHoveredDocument(doc)}
                   onClick={() => {
-                    setCurrentDocument(doc);
+                    setActiveDocument(doc);
                     onToggle();
                   }}
                 />
               ))}
             </div>
-            <div className="w-2/3 pl-4">
+            <div className="w-2/3 pl-4 overflow-y-auto">
               {hoveredDocument ? (
-                <div className="markdown-preview">
-                  <MarkdownRenderer document={hoveredDocument} />
-                </div>
+                <MarkdownRenderer document={hoveredDocument} />
               ) : (
                 <div className="text-gray-500">Hover over a document to preview</div>
               )}
