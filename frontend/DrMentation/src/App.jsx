@@ -8,7 +8,7 @@ import Header from './components/Header';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import Editor from './components/Editor';
 import SubHeader from './components/SubHeader';
-import Explorer from './components/Explorer';
+import ExplorerModal from './components/ExplorerModal';
 
 
 function App() {
@@ -56,6 +56,7 @@ function App() {
   }
 
   function toggleExplorer() {
+    console.log("kalle");
     setDocumentsExplorer(!documentsExplorer)
   }
 
@@ -78,7 +79,7 @@ function App() {
           setSource={updateDocument}
           textareaRef={textareaRef}
         />
-        {documentsExplorer ? <Explorer onClose={toggleExplorer}/> : null}
+        {documentsExplorer ? <ExplorerModal onToggle={toggleExplorer}/> : null}
         <div className='flex-grow flex justify-center'>
           <div className={`flex ${editMode &&hidePreview ? 'flex-grow' : 'justify-center'} max-w-[1794px] w-full`}>
             {editMode && <Editor content={currentDocument.content} onChange={updateDocument} textareaRef={textareaRef}/>}

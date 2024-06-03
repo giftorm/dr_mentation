@@ -1,6 +1,6 @@
 /** https://io.google/2022/faq/
     https://tailwindcss.com/docs/whitespace
-    
+
 */
 
 
@@ -15,6 +15,7 @@ export default {
     extend: {
       colors: {
         primary: '#1abc9c',
+        primarytint: '#1abc900',
         secondary: '#2c3e50',
         background: '#121212',
         text: '#ecf0f1',
