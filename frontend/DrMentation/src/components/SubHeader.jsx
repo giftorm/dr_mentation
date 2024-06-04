@@ -1,4 +1,4 @@
-function SubHeader({ editMode, onSave, onCancel, onNew, onEdit, onHide, source, preview, onToggleExplorer, setSource, textareaRef }) {
+function SubHeader({ editMode, onSave, onCancel, onNew, onEdit, onHide, preview, source, onToggleExplorer, setSource, textareaRef }) {
   const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
   function applyFormat(fix, preOnly) {

@@ -1,4 +1,4 @@
-import { useState, React, Fragment, useRef } from 'react';
+import { useState, useEffect, React, Fragment, useRef } from 'react';
 import { GetDocument, PostDocument, PutDocument } from './client/document';
 import { Document } from './model/Document';
 import Header from './components/Header';
@@ -7,6 +7,8 @@ import Editor from './components/Editor';
 import SubHeader from './components/SubHeader';
 import ExplorerModal from './components/ExplorerModal';
 import DocumentForm from './components/DocumentForm';
+import CreateTestDocuments from './helpers/CreateTestResources';
+
 
 function App() {
   const [editMode, setEditMode] = useState(false);
@@ -16,6 +18,19 @@ function App() {
   const [hidePreview, setHidePreview] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const textareaRef = useRef();
+
+  // let hasCalls = false;
+
+  useEffect(() => {
+    async function createTestData() {
+      // if (!hasCalls) {
+        await CreateTestDocuments();
+        // hasCalls = true;
+      // }
+    }
+    createTestData();
+  }, []);
+
 
   function newDocument() {
     return new Document();
@@ -60,7 +75,7 @@ function App() {
   }
 
   function handleEdit() {
-    if (!activeDocument) {
+    if (!activeDocument) {ß
       const doc = newDocument();
       activateDocument(doc);
     }
@@ -90,7 +105,7 @@ function App() {
 
   return (
     <Fragment>
-      <div className='bg-background min-h-screen flex flex-col'>
+      <div className='text-text bg-background min-h-screen flex flex-col'>
         <Header />
         <SubHeader
           editMode={editMode}
@@ -101,6 +116,7 @@ function App() {
           onPost={PostDocument}
           onEdit={handleEdit}
           onHide={setHidePreview}
+          preview={hidePreview}
           source={activeDocument}
           onToggleExplorer={toggleExplorer}
           explorer={setDocumentsExplorer}
