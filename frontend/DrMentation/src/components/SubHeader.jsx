@@ -59,9 +59,9 @@ function SubHeader({ editMode, onSave, onCancel, onNew, onEdit, onHide, preview,
         <button key='new' className={buttonStyle} onClick={onNew}>
           new
         </button>
-        <button key='edit' className={buttonStyle} onClick={onEdit}>
+        {source ? <button key='edit' className={buttonStyle} onClick={onEdit}>
           edit
-        </button>
+        </button> : null}
       </div>
     </header>
   );
