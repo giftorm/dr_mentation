@@ -34,7 +34,7 @@ export default function ExplorerModal({ onToggle, activeDocument, setActiveDocum
       onClick={onToggle}
     >
       <div
-        className="bg-primary w-full max-w-5xl h-[70vh] p-6 rounded-lg shadow-lg ml-5 mr-5"
+        className="bg-background w-full border-[1px] border-text max-w-5xl h-[70vh] p-6 rounded-lg shadow-lg ml-5 mr-5"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-end">
@@ -42,7 +42,7 @@ export default function ExplorerModal({ onToggle, activeDocument, setActiveDocum
             close
           </button>
         </div>
-        <div className="mt-4 flex flex-col h-full">
+        <div className="mt-4 flex flex-col h-full text-background">
           <input
             type="text"
             value={searchQuery}
@@ -51,7 +51,7 @@ export default function ExplorerModal({ onToggle, activeDocument, setActiveDocum
             className="w-full p-2 mb-4 border rounded"
           />
           <div className="flex-grow flex max-h-[80%]">
-            <div className="w-1/3 border-r pr-4 overflow-y-auto">
+            <div className="w-1/3 border-r pr-4 overflow-y-auto bg-background text-background">
               {error && <>Error: {error.message}</>}
               {!error && isFetching ? <>Loading...</> : currentDocuments.map((doc, index) => (
                 <Item
@@ -86,7 +86,7 @@ function Item({ document, isActive, isHovered, onHover, onClick }) {
     <div
       onMouseEnter={onHover}
       onClick={onClick}
-      className={`p-2 mb-2 border rounded cursor-pointer ${isHovered ? 'bg-gray-200' : 'bg-white'} ${isActive ? 'bg-gray-300' : ''}`}
+      className={`p-2 mb-2 border border-text rounded cursor-pointer ${isHovered ? 'bg-primary text-background' : 'bg-background text-text'} ${isActive ? 'bg-white text-background': ''}`}
     >
       {document.title}
     </div>
