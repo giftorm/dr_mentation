@@ -137,9 +137,7 @@ function App() {
             setActiveDocument={activateDocument}
           />
         ) : null}
-        <div
-          className={`flex ${editMode && hidePreview ? "flex-grow" : "justify-center"} max-w-[1794px] w-full`}
-        >
+        <div className="flex justify-center pt-12 w-full min-h-[1000px]">
           {editMode && (
             <Editor
               content={activeDocument?.content || ""}
@@ -148,10 +146,10 @@ function App() {
             />
           )}
           {editMode && hidePreview && (
-            <div className="w-[2px] border-l-2 border-text border-dashed"></div>
+            <div className="flex flex-none w-[2px] border-l-2 border-text border-dashed"></div>
           )}
           {!editMode || hidePreview ? (
-            <MarkdownRenderer document={activeDocument} />
+            <MarkdownRenderer document={activeDocument} style="p-5 flex flex-1 w-max max-w-3xl"/>
           ) : null}
         </div>
       </div>

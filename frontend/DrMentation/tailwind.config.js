@@ -18,6 +18,7 @@ export default {
         primarytint: '#1abc900',
         secondary: '#2c3e50',
         background: '#121212',
+        backgroundtint: '#100000',
         text: '#ecf0f1',
         accent: '#e67e22',
       },
