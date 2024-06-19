@@ -149,7 +149,10 @@ function App() {
             <div className="flex flex-none w-[2px] border-l-2 border-text border-dashed"></div>
           )}
           {!editMode || hidePreview ? (
-            <MarkdownRenderer document={activeDocument} style="p-5 flex flex-1 w-max max-w-3xl"/>
+            <MarkdownRenderer
+              document={activeDocument}
+              style="flex flex-1 w-max max-w-3xl"
+            />
           ) : null}
         </div>
       </div>

@@ -15,7 +15,7 @@ function MarkdownRenderer({ document, style }) {
     <div className={style}>
       {document ? (
         <Markdown
-          className="prose prose-invert break-words max-w-full"
+          className="prose prose-invert break-words p-5 mr-5 ml-5 bg-backgroundtint rounded-3xl w-full max-w-full"
           components={options}
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[
