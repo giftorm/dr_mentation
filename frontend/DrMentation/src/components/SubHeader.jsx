@@ -1,13 +1,14 @@
-function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onHide, source, preview, setSource, textareaRef }) {
+function SubHeader({ editMode, onSave, onCancel, onNew, onEdit, onHide, preview, source, onToggleExplorer, setSource, textareaRef }) {
   const buttonStyle = 'flex text-xl px-4 py-2 text-text rounded-md font-primary hover:bg-gray-700';
 
   function applyFormat(fix, preOnly) {
+    console.log(source)
     const { selectionStart, selectionEnd } = textareaRef.current;
     let newText;
     if (preOnly) {
-      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + source.content.slice(selectionEnd);
+      newText = source.content.slice(0, selectionStart) + fix + source.content.slice(selectionStart, selectionEnd) + source.content.slice(selectionEnd);
     } else {
-      newText = source.slice(0, selectionStart) + fix + source.slice(selectionStart, selectionEnd) + fix + source.content.slice(selectionEnd);
+      newText = source.content.slice(0, selectionStart) + fix + source.content.slice(selectionStart, selectionEnd) + fix + source.content.slice(selectionEnd);
     }
     setSource(newText);
 
@@ -38,8 +39,8 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onHide, source, pr
           <button key='save' className={buttonStyle} onClick={onSave}>
             save
           </button>
-          <button key='exit' className={buttonStyle} onClick={onExit}>
-            exit
+          <button key='cancel' className={buttonStyle} onClick={onCancel}>
+            cancel
           </button>
           <button key='preview' className={buttonStyle} onClick={() => onHide(!preview)}>
            {preview ? 'hide' : 'preview'}
@@ -52,12 +53,15 @@ function SubHeader({ editMode, onSave, onExit, onNew, onEdit, onHide, source, pr
   return (
     <header className='flex items-center h-14 sticky border-t-2 justify-center'>
       <div className='flex space-x-4'>
+        <button key='explorer' className={buttonStyle} onClick={onToggleExplorer}>
+          explorer
+        </button>
         <button key='new' className={buttonStyle} onClick={onNew}>
           new
         </button>
-        <button key='edit' className={buttonStyle} onClick={onEdit}>
+        {source ? <button key='edit' className={buttonStyle} onClick={onEdit}>
           edit
-        </button>
+        </button> : null}
       </div>
     </header>
   );

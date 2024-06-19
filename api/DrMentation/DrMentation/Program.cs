@@ -1,6 +1,5 @@
 using DrMentation.Services.Documents;
 
-
 // builder can be used for DI and configuration
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -12,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
     {
         options.AddPolicy("AllowLocalhost",
             builder => builder
-                .WithOrigins("http://127.0.0.1:5173") // URL of your React app
+                .WithOrigins("http://localhost:5173", "http://127.0.0.1:5173") // URL of your React app
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()); // Allow credentials
