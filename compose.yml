@@ -1,16 +1,16 @@
 services:
-  backend-api:
-    ports:
-      - "5045:80"
-    build:
-      context: ./api/DrMentation
-      dockerfile: docker/Dockerfile
-    volumes:
-      - ./api/DrMentation:/app
-      - /app/bin
-      - /app/obj
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+  #   backend-api:
+  #     ports:
+  #       - "5045:80"
+  #     build:
+  #       context: ./api/DrMentation
+  #       dockerfile: docker/Dockerfile
+  #     volumes:
+  #       - ./api/DrMentation:/app
+  #       - /app/bin
+  #       - /app/obj
+  #     environment:
+  #       - ASPNETCORE_ENVIRONMENT=Development
 
   frontend-app:
     ports:
