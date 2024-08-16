@@ -15,20 +15,16 @@ services:
       context: ./api/v2
       dockerfile: Dockerfile
     ports:
-      - 5045:5045
+      - "5045:5045"
     volumes:
       - ./api/v2:/app
-      depends_on:
-      - mongodb
-  mongodb:
-    image: mongodb/mongodb-community-server:6.0-ubi8
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=
-      - MONGO_INITDB_ROOT_PASSWORD=
+  mongo:
+    image: mongo
     ports:
-      - 27017:27017
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
     volumes:
-      - type: bind
-        source: ./data
-        target: /data/db
+      - ./data:/data/db
 
