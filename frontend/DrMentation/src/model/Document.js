@@ -1,9 +1,7 @@
 export class Document {
-    constructor(content='', id, parent, title, description) {
-        this.content = content;
+    constructor(content='', id, title) {
         this.id = id;
-        this.parent = parent;
         this.title = title;
-        this.description = description;
+        this.content = content;
     }
 };

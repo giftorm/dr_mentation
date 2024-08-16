@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
 )
@@ -26,8 +27,17 @@ func main() {
         Format: "${pid} ${locals:requestid} ${status} - ${method} ${path}​\n",
     }))
 
+    // Initialize default config
+    app.Use(cors.New())
+
+    // Or extend your config for customization
+    app.Use(cors.New(cors.Config{
+        AllowOrigins: []string{"http://127.0.0.1", "http://localhost"},
+        AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+    }))
+
     Router(app);
 
     // Start the server on port 3000
-    log.Fatal(app.Listen(":3000"))
+    log.Fatal(app.Listen(":5045"))
 }

@@ -1,17 +1,4 @@
 services:
-  #   backend-api:
-  #     ports:
-  #       - "5045:80"
-  #     build:
-  #       context: ./api/DrMentation
-  #       dockerfile: docker/Dockerfile
-  #     volumes:
-  #       - ./api/DrMentation:/app
-  #       - /app/bin
-  #       - /app/obj
-  #     environment:
-  #       - ASPNETCORE_ENVIRONMENT=Development
-
   frontend-app:
     ports:
       - "5173:5173"
@@ -23,14 +10,25 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-
   backend-api-v2:
     build:
       context: ./api/v2
-      # Correct the path to your Dockerfile
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
-    # Important to bind/mount your codebase dir to /app dir for live reload
+      - 5045:5045
     volumes:
       - ./api/v2:/app
+      depends_on:
+      - mongodb
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
+    ports:
+      - 27017:27017
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
+

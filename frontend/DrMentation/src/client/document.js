@@ -4,7 +4,7 @@ let headers = {
 };
 
 export async function GetDocument({ id }) {
-  const response = await fetch(`http://127.0.0.1:5045/documents/${id}`, {
+  const response = await fetch(`http://127.0.0.1:5045/document/${id}`, {
     method: "GET",
     headers: headers,
   });
@@ -18,7 +18,7 @@ export async function GetDocument({ id }) {
 }
 
 export async function ListDocuments() {
-  const res = await fetch("http://127.0.0.1:5045/documents/", {
+  const res = await fetch("http://127.0.0.1:5045/document/", {
     method: "GET",
     headers: headers,
   });
@@ -31,7 +31,7 @@ export async function ListDocuments() {
 }
 
 export async function SearchDocuments(query) {
-  const res = await fetch("http://127.0.0.1:5045/documents/search", {
+  const res = await fetch("http://127.0.0.1:5045/document/search", {
     method: "POST",
     headers: headers,
     body: JSON.stringify({
@@ -46,14 +46,12 @@ export async function SearchDocuments(query) {
   return resData;
 }
 
-export async function PostDocument({ parent, title, description, content }) {
-  const response = await fetch("http://127.0.0.1:5045/documents", {
+export async function PostDocument({content, title}) {
+  const response = await fetch("http://127.0.0.1:5045/document", {
     method: "POST",
     headers: headers,
     body: JSON.stringify({
-      parent: parent,
       title: title,
-      description: description,
       content: content,
     }),
   });
@@ -61,20 +59,16 @@ export async function PostDocument({ parent, title, description, content }) {
     throw new Error("Failed to create Document");
   }
 
-  return await response.json();
+  return await response.text();
 }
 
 export async function PutDocument({ title, id, content }) {
-  console.log(title);
-  console.log(id);
-  console.log(content);
-  const response = await fetch(`http://127.0.0.1:5045/documents/${id}`, {
+  const response = await fetch(`http://127.0.0.1:5045/document`, {
     method: "PUT",
     headers: headers,
     body: JSON.stringify({
-      parent: "root",
+        id: id,
       title: title,
-      description: "template description",
       content: content,
     }),
   });

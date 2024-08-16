@@ -1,4 +1,4 @@
-import { useState, useEffect, React, Fragment, useRef } from "react";
+import { useState, React, Fragment, useRef } from "react";
 import { GetDocument, PostDocument, PutDocument } from "./client/document";
 import { Document } from "./model/Document";
 import Header from "./components/Header";
@@ -7,7 +7,6 @@ import Editor from "./components/Editor";
 import SubHeader from "./components/SubHeader";
 import ExplorerModal from "./components/ExplorerModal";
 import DocumentForm from "./components/DocumentForm";
-import CreateTestDocuments from "./helpers/CreateTestResources";
 
 function App() {
   const [editMode, setEditMode] = useState(false);
@@ -17,18 +16,6 @@ function App() {
   const [hidePreview, setHidePreview] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const textareaRef = useRef();
-
-  // let hasCalls = false;
-
-  useEffect(() => {
-    async function createTestData() {
-      // if (!hasCalls) {
-      await CreateTestDocuments();
-      // hasCalls = true;
-      // }
-    }
-    createTestData();
-  }, []);
 
   function newDocument() {
     return new Document();
@@ -45,22 +32,13 @@ function App() {
   async function saveDocument(document) {
     let res;
     if (document.id) {
-      console.log(`Updating document with id: ${document.id}`);
       res = await PutDocument(document);
     } else {
-      console.log("Creating NEW document.");
-      res = await PostDocument(document);
-      console.log("Returned data from Post:");
-      console.log(res);
+      res = await PostDocument(document)
+        document.id = res
       setActiveDocument(
-        new Document(
-          res.content,
-          res.uuid,
-          res.parent,
-          res.title,
-          res.description,
-        ),
-      ); // Update activeDocument with latest data
+          document
+      );
     }
 
     setEditMode(false);

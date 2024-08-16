@@ -56,7 +56,7 @@ func ListAll(dbh *db.DBH) ([]model.Document, error) {
 }
 
 func SearchContent(dbh *db.DBH, textSearch string) ([]model.Document, error) {
-    filter := bson.M{"content": bson.M{"$regex": textSearch}}
+    filter := bson.M{"content": bson.M{"$regex": textSearch, "$options": "i"}}
 
     cursor, err := dbh.DocumentsCollection.Find(dbh.Context, filter)
     if err != nil {
