@@ -24,3 +24,13 @@ services:
     environment:
       - NODE_ENV=development
 
+  backend-api-v2:
+    build:
+      context: ./api/v2
+      # Correct the path to your Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    # Important to bind/mount your codebase dir to /app dir for live reload
+    volumes:
+      - ./api/v2:/app

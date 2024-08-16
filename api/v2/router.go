@@ -2,21 +2,22 @@ package main
 
 import (
 	"drmentation.io/api/v2/controller"
-	"drmentation.io/api/v2/db/mongo"
 	"github.com/gofiber/fiber/v3"
 )
 
 
-func Router(app *fiber.App, dbh *mongo.Dbh) {
+func Router(app *fiber.App) {
     app.Get("/", func(c fiber.Ctx) error {
         return c.SendString("Hello, World 👋!")
     })
 
-    app.Get("/documents/test", func(c fiber.Ctx) error {
-        return c.SendString(controller.Insert(dbh))
-    })
+    app.Post("/document", func(c fiber.Ctx) error { return controller.Insert(c) })
+    app.Post("/document/search", func(c fiber.Ctx) error { return controller.Search(c) })
 
-    app.Get("/documents/:id", func(c fiber.Ctx) error {
-        return c.JSON(controller.Get(c.Params("id")))
-    })
+    app.Delete("/document/:id", func(c fiber.Ctx) error { return controller.Delete(c) })
+
+    app.Put("/document", func(c fiber.Ctx) error { return controller.Update(c) })
+
+    app.Get("/document/:id", func(c fiber.Ctx) error { return controller.Get(c) })
+    app.Get("/document", func(c fiber.Ctx) error { return controller.ListAll(c) })
 }
