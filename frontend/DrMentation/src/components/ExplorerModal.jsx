@@ -48,8 +48,8 @@ export default function ExplorerModal({
       try {
         const docs = await SearchDocuments(debouncedSearchQuery);
         let asd = docs.map(
-          ({ uuid, title, content }) =>
-            new Document(content, uuid, undefined, title),
+          ({ id, title, content }) =>
+            new Document(content, id, title),
         );
         setCurrentDocuments(asd);
       } catch (error) {

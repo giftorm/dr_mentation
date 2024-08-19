@@ -26,7 +26,7 @@ function MarkdownRenderer({ document, style }) {
           {document.content}
         </Markdown>
       ) : (
-        <p>kalle</p>
+        <div />
       )}
     </div>
   );

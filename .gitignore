@@ -109,3 +109,4 @@ lib-cov/
 .venv/
 venv/
 __pycache__/
+data/
