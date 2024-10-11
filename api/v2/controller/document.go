@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"drmentation.io/api/v2/db"
 	"drmentation.io/api/v2/model"
 	"drmentation.io/api/v2/repository"
 	"github.com/gofiber/fiber/v3"
@@ -12,10 +11,10 @@ import (
 func Get(c fiber.Ctx) error {
     id := c.Params("id")
 
-    dbh := db.Connect()
-    defer dbh.CancelFunc()
+    repo := repository.New()
+    defer repo.DBH.CancelFunc()
 
-    m, err := repository.Get(dbh, id)
+    m, err := repo.Get(id)
     if err != nil {
         return err
     }
@@ -29,10 +28,10 @@ func Insert(c fiber.Ctx) error {
         return err
     }
 
-    dbh := db.Connect()
-    defer dbh.CancelFunc()
+    repo := repository.New()
+    defer repo.DBH.CancelFunc()
 
-    res, err := repository.Insert(dbh, model)
+    res, err := repo.Insert(model)
     if err != nil {
         return err
     }
@@ -40,10 +39,10 @@ func Insert(c fiber.Ctx) error {
 }
 
 func ListAll(c fiber.Ctx) error {
-    dbh := db.Connect()
-    defer dbh.CancelFunc()
+    repo := repository.New()
+    defer repo.DBH.CancelFunc()
 
-    res, err := repository.ListAll(dbh)
+    res, err := repo.ListAll()
     if err != nil {
         return err
     }
@@ -62,10 +61,10 @@ func Search(c fiber.Ctx) error {
         return c.SendString("")
     }
 
-    dbh := db.Connect()
-    defer dbh.CancelFunc()
+    repo := repository.New()
+    defer repo.DBH.CancelFunc()
 
-    res, err := repository.SearchContent(dbh, search.Content)
+    res, err := repo.SearchContent(search.Content)
     if err != nil {
         return err
     }
@@ -75,10 +74,10 @@ func Search(c fiber.Ctx) error {
 func Delete(c fiber.Ctx) error {
     id := c.Params("id")
 
-    dbh := db.Connect()
-    defer dbh.CancelFunc()
+    repo := repository.New()
+    defer repo.DBH.CancelFunc()
 
-    if err := repository.Delete(dbh, id); err != nil {
+    if err := repo.Delete(id); err != nil {
         return err
     }
 
@@ -95,10 +94,10 @@ func Update(c fiber.Ctx) error {
        return Insert(c)
     }
 
-    dbh := db.Connect()
-    defer dbh.CancelFunc()
+    repo := repository.New()
+    defer repo.DBH.CancelFunc()
 
-    if err := repository.Update(dbh, model); err != nil {
+    if err := repo.Update(model); err != nil {
         return err
     }
     return c.JSON(model)

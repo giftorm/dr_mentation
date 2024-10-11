@@ -10,6 +10,10 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+    networks:
+      dr-mentation:
+        ipv4_address: 192.168.102.10
+
   backend-api-v2:
     build:
       context: ./api/v2
@@ -18,6 +22,10 @@ services:
       - "5045:5045"
     volumes:
       - ./api/v2:/app
+    networks:
+      dr-mentation:
+        ipv4_address: 192.168.102.20
+
   mongo:
     image: mongo
     ports:
@@ -27,4 +35,14 @@ services:
       MONGO_INITDB_ROOT_PASSWORD:
     volumes:
       - ./data:/data/db
+    networks:
+      dr-mentation:
+        ipv4_address: 192.168.102.30
 
+networks:
+  dr-mentation:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.102.0/24
+          gateway: 192.168.102.1
